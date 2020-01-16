@@ -1,0 +1,453 @@
+---
+title: "Lecture 3: Intro 506"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(show.signif.stars = FALSE)
+library(tidyverse)
+```
+
+__These notes are modified from Mark Greenwood's 2019 STAT 506 course__
+
+## General schedule for class:
+
+Weekly homework (some short answer questions and other more involved problems).
+\vfill
+
+Lectures will generally involve PDF documents with a skeleton where we 
+\vfill
+
+Lectures will also have an active learning component with think-pair-share exercises as well as some computer coding exercises.
+\vfill
+
+In class group work will be required - real statistical analyses are never done alone - both as informal discussion and occasionally as formal lab exercises
+\vfill
+
+In general, I'd suggest bringing your computer daily. However, I'll try to mention when we will have coding-heavy lectures.
+\vfill
+
+Midterm exam around middle of semester prior to spring break (take home and in class).
+\vfill
+
+Final exam during finals week (take home and in class).
+\vfill
+
+There will be a series of three projects to be completed over the course of the semester. Some projects will be more scripted where you are required to answer specific questions and others will allow you to select the dataset and/or research question(s).
+\vfill
+
+\newpage
+
+## Regression version of linear models in R
+
+
+
+\vfill
+
+
+\vfill
+
+\vfill
+
+Or 
+
+
+\vfill
+
+
+\vfill
+
+
+\vfill
+
+\vfill
+
+
+#### Assumptions: 
+
+$Y_i,Y_{j}$ are conditionally independent for different $i,j$ (after controlling for X1, X2,...), 
+
+\vfill
+
+#### Indicator / dummy variables:
+
+You must define indicator variables and we will use $I_{VarName=Cat}$  otherwise.
+\vfill
+
+Suppose we have a model with a factor variable predictor:
+
+$$Y_{ij} = \mu + \alpha_i + \epsilon_{ij},$$
+where $\alpha_1 = 0$ or $\alpha_k = 0$. This is a one-way ANOVA and can be expressed as a linear model.
+\vfill
+
+\vfill
+
+
+
+\vfill
+This can be expressed with `lm(y ~ factor_var, data =)` in R.
+\newpage
+
+An alternative is the cell means specification, where
+
+\vfill
+
+or equivalently
+
+\vfill
+
+which can be written as `lm(y ~ var_factor - 1, data = )` in R.
+
+## Interactions
+
+With two X variables, consider
+
+$$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} +$$
+\vfill
+If $X_{1i}, X_{2i}$ are indicator variables, then $\beta_3$ is 
+
+_Q_: write the mean response for
+- $(X_{1i} = 0, X_{2i} = 0) \rightarrow$
+\vfill
+- $(X_{1i} = 1, X_{2i} = 0)\rightarrow$
+\vfill
+- $(X_{1i} = 0, X_{2i} = 1)\rightarrow$
+\vfill
+- $(X_{1i} = 1, X_{2i} = 1)\rightarrow$
+\vfill
+
+Interpretation: 
+\vfill
+
+First test of interest is the one on the interaction part(s) of the model
+\vfill
+
+Use `effects` plots to generate interpretations of combined results of the two main effects and interaction coefficient(s) (more later)
+
+\newpage
+
+## Scope of inference:
+
+Is a variable(s) randomized to subjects or not?
+
+- Randomly assign subjects to levels: $X_1 \rightarrow$ 
+\vfill
+- Do not randomly assign subjects to levels: $X_2 \rightarrow$ 
+
+\vfill
+
+Are the subjects a random sample or not?
+
+- Random sample $\rightarrow$ inferences apply to 
+\vfill
+- Not a random sample $\rightarrow$ inferences 
+
+\vfill
+What if you have a quantitative explanatory variable and decide to remove observations that are extreme on the response?
+
+- Don't do this (without justification of a data entry error).
+\vfill
+- Consider an analysis with and without the point.
+\vfill
+
+
+Time period of measurements matters:
+
+- Years of the study: note that inferences to those year ONLY in scope of inference (unless analyzing a random sample of years and then it would be to the population of years sampled from)
+\vfill
+
+- Example: Data collected yearly from 1950 to 1980, only make inferences to 1950 to 1980 (and must note this in scope of inference discussion)
+\vfill
+
+- If data are just from a year or two, note those in study description if known: no implication that that year or two is representative of what would have happened in many others
+\vfill
+
+
+Demographics of subjects similarly useful to describe.
+
+\newpage
+
+## Reporting of results:
+
+Report sample size as obtained and analyzed in reports, noting reasons for any missing/deleted observations
+\vfill
+
+"Evidence" sentence contains something like: We found XXX evidence against the null hypothesis of XXX (test statistic, dist under $H_0$, and p-value) controlled for ..., so we conclude that [something about alternative hypothesis].
+\vfill
+
+In this, report the value of the test statistic, its distribution under the null hypothesis (t, F, Chi-squared, permutation, standard normal for Z) AND that distribution's degrees of freedom (if exist). 
+\vfill
+
+"Evidence" sentence (if not one-sided test) does not test for specific direction - direction is part of "size" sentence or general summary of results.
+\vfill
+
+DO **NOT** just report degrees of freedom without a named distribution to associate it with.
+\vfill
+
+Do report them efficiently as F(2,20) as opposed to F with 2 numerator and 20 denominator degrees of freedom.
+\vfill
+
+You should always report results that correspond to the test being done (one-sided or two-sided) and **"controlling for" anything else in the model (be specific)**. 
+\vfill
+
+"Size" sentences interpret slope coefficient with CI where possible for any discussions of specific coefficients. 
+\vfill
+
+In complex models (say with interactions or with many levels of categorical variables), "size" is related to pattern of results and so may not involve very specific numerical results and CIs.
+\vfill
+
+Follow up analyses with contrasts or pairwise comparisons if of interest in the application.
+\vfill
+
+**NEVER use the word "significant"** in this class. Discuss strength of evidence that tests provide against the null and then conclude what that means. The "s" word is loaded and often misunderstood. Find a way to make your point without that word!
+\vfill
+
+
+\vfill
+**"Data"** is a plural word unless you only have one subject and then you should be saying _datum_. This is hard. You are bombarded with the colloquial use of the term (and in Excel) that means "information" which is OK to use in a singular sense. Whenever writing "data" as a _now_ sophisticated, statistically-trained scientist, in your mind replace it with "things" and see how your sentence sounds. 
+\vfill
+
+Run spell check on everything before submitting it, whether writing reports or short answers.
+\vfill
+
+R stuff (more to come too!):
+- You will use R either exclusively or nearly exclusively for the course
+\vfill
+
+- You will practice good data management, wrangling, visualization, analysis, and model interrogation and exploration using reproducible methods in R via R-studio.
+\vfill
+
+- Do not `attach()` data sets. This is extremely dangerous when working with complicated data sets.
+
+\vfill
+
+- Use `<-` instead of "=" to assign things in R ("=" is for options within function calls)
+
+\newpage
+
+## R Markdown and Reproducible Research
+
+R-markdown provides an easy to use venue where you can write code as _chunks_ and run the chunk entirely and provide annotations/writing around the code and output to document and explain what you are doing
+\vfill
+
+Cheat sheet for R-markdown: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+\vfill
+
+
+Make sure to have a miktex (https://miktex.org/) installation on your computer, miktex allows you to compile to pdf documents and more latex functionality in the documents
+\vfill
+
+**Results Reproducibility/ replicability**:
+- "ability to recreate all of the figures and numbers in a scientific publication from the code and data provided by the authors" (Leek and Jager, 2017).
+\vfill
+
+- Code and data together and can be easily re-run and provide same answers
+\vfill
+
+- Output usually contains code run and output but some may be suppressed in output (echo=F codechunk option) to clean up output - but only do this if instructed to. 
+
+\vfill
+
+- Allows other researchers to verify results and for you to repeat analyses and get same results
+
+\vfill
+
+- Anything that is "random" should have `set.seed(XXX)` specified in code so re-running the code will always produce same results
+\vfill
+
+**Inferential replicability/ reproducibility**:
+  
+- "ability to reperform the experiments and computational analyses
+in a scientific publication and arrive at consistent results" (Leek and Jager, 2017).
+\vfill
+
+- Repeat same study and get similar (same?) results
+\vfill
+
+- Remember that p-values are random if the data are random (see Amrhein et al., p 5)
+\vfill
+
+    
+- Null Hypothesis Significance Testing with fixed $\alpha$ levels struggles in replication studies with significant or not interpretation (p-value less than 0.05 once, repeat - what are the chances of a p-value less than 0.05?)
+\vfill   
+
+- Consider: what is the chance in two independent studies of the same NHST to both have a p-value less than 0.05 if null hypothesis is true?
+
+Pr(Both $H_0$ rejected| $H_0$ is true) = 
+\vfill
+
+Pr(At lease one false rejection with two tests| $H_0$ is true) = 
+\vfill
+
+With 10 tests, this rises to about 
+\vfill
+\newpage
+
+## Data Visualization
+
+Consider a dataset that contains housing prices in King County, WA.
+
+```{r}
+Seattle <- read_csv('http://math.montana.edu/ahoegh/teaching/stat408/datasets/SeattleHousing.csv')
+Seattle <- Seattle %>% mutate(waterfront = as.factor(waterfront), 
+            bedrooms = as.factor(bedrooms), 
+            multiple_floors = as.factor(floors > 1))
+```
+
+
+## Alternatives to boxplots...
+
+Boxplots display the 5 number summary (min, Q1, median, Q3, and max) and potentially some outlier information.
+
+```{r}
+boxplot(price ~ waterfront, data = Seattle)
+```
+
+\vfill
+Single observations may be flagged by outlier "rules" in boxplots that are not really outside the overall pattern (so not really outliers) and can't see points that are just inside cut-offs
+
+\vfill
+
+Boxplots will not detect multi-modal distributions, can have issues when multiple quartiles are tied, look the same regardless of sample size, and can be made with less than 5 observations in R (even though 5 lines are displayed)
+
+Reasons for making single and side-by-side boxplots? To compare:
+
+- center
+- shape
+- spread
+
+
+
+In this course, use `geom_violin()` or at least overlay points on top of boxplots.
+\vfill
+
+```{r, warnings = F}
+library(dplyr)
+Seattle %>% ggplot(aes(y = price, x = waterfront)) + 
+  geom_violin(draw_quantiles = c( 0.5)) + 
+  geom_jitter(alpha = .1) + 
+  stat_summary(fun.y=mean, geom="point", shape=23, size=2)
+```
+
+
+\vfill
+
+Nonparametric density plots help to visualize shape (both default to using normal kernels so may look at bit more normal than really are)
+\vfill
+
+
+## Two-sample t-tests in R:
+
+The goal of the t-test is to 
+\vfill
+
+This can be written as a linear model
+
+\vfill
+\vfill
+
+
+```{r warning=F,message=F}
+t.test(price~waterfront,data=Seattle)
+```
+
+\newpage
+
+## One-Way ANOVA in R:
+
+Situation: k - factor predictor with a quantitive response
+\vfill
+
+Model:
+
+
+\vfill
+
+Cell-means vs reference and deviation coding:
+
+The cell means notation `model.matrix(y ~ x -1)` results in estimates for the group means $\mu_i$.
+
+```{r warning=F, message=F, fig.width=10, fig.height=4, echo=T}
+lm_beds <- lm(price~ bedrooms - 1,data=Seattle )
+summary(lm_beds)
+anova(lm_beds)
+#
+```
+\newpage
+```{r warning=F, message=F, fig.width=10, fig.height=4, echo=T}
+lm_beds2 <- lm(price ~ bedrooms, data = Seattle)
+summary(lm_beds2)
+anova(lm_beds2)
+```
+
+\newpage
+
+## Contrasts (Tukey-Kramer) in R:
+
+In situations with a _k_ level (_k_>2) categorical variable and we find evidence against the null that the levels of that variable have the same mean, researchers often want to know which levels are different
+\vfill
+
+F-test just tells us that there is some difference somewhere in the means across the levels
+\vfill
+
+We get tests of each level versus baseline from the t-tests in the model summary, but no direct comparisons of the non-baseline levels with each other.
+
+\vfill
+
+And the default t-tests fail to account for all the tests we might be conducting, especially when there are many levels being compared:
+\vfill
+
+The number of pairs to compare can be calculated based on taking _k_ choose 2 (in R: `choose(k,2)`), and this grows quickly as _k_ increases
+  - `choose(3,2)`=`r choose(3,2)`, `choose(5,2)`=`r choose(5,2)`, `choose(10,2)`=`r choose(10,2)`
+\vfill
+
+Tukey-Kramer is one approach to performing all pairwise comparisons and controlling the overall (family-wise) error rate across all these tests
+\vfill
+
+Family-wise error control relates to controlling the probability of at least one false detection
+\vfill
+
+Output also contains estimated differences in means between the groups - that is also useful information in many situations
+\vfill
+
+Interpretations can use "detected to be different" of "not detected to be different" wording for pairs and discussing groups of levels that were not detectably different but were detected to be different from other groups
+\vfill
+
+Can be run in more complex models (mixed, glms) and in situations with other variables in the model (differences in levels controlled for ...)
+
+\vfill
+
+\newpage
+
+## Two-Way ANOVA: 
+
+\vfill
+\vfill
+
+```{r}
+lm_anova2<- lm(price ~ multiple_floors + waterfront, data = Seattle)
+summary(lm_anova2)
+```
+\vfill
+
+Interaction plots provide visual information to assess whether the effects (components) "look" like they interact in their impacts on the response.
+\vfill
+
+```{r}
+interaction.plot(Seattle$multiple_floors,Seattle$waterfront, Seattle$price)
+```
+
+
+Plot of the means of responses by all combinations of different variables (one variable on x-axis and one as lines/symbols)
+\vfill
+
+Look for non-parallel lines in these plots - that suggests that differences at different levels of the x-axis variable are not all the same on the response.
+\vfill
+
+Lines do not need to cross to create an interaction that matters
+
+\vfill
+
+Importance of the interaction relates to precision in the responses at each combination so add some measure of precision to plot to get some sense of whether the interaction looks "big"/ clearly non-parallel
